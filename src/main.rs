@@ -42,17 +42,17 @@ fn bytes_as_u32(array: &[u8]) -> u32 {
 
 // TODO: meta data from IHDR (and whatever ancillary chunks store metadata)
 // return hashmap containing metadata key/ value pairs
-fn get_text_metadata(chunk: Vec<u8>) -> HashMap<String, String> {
+// fn get_text_metadata(chunk: Vec<u8>) -> HashMap<String, String> {
 
-}
-fn get_numerical_metadata(chunk: Vec<u8>) -> HashMap<String, u32> {
-}
+// }
+// fn get_numerical_metadata(chunk: Vec<u8>) -> HashMap<String, u32> {
+// }
 // TODO: IDAT decoder
 // return vector consisting of arrays of color data
 //(0-255 so u8 and RGB so arrays of length 3 )
-fn idat_decoder(chunk: Vec<u8>) -> Vec<Vec<u8>> {
+// fn idat_decoder(chunk: Vec<u8>) -> Vec<Vec<u8>> {
 
-}
+// }
 
 fn interpret_chunks(byte_data: Vec<u8>) -> HashMap<usize, String> {
     if byte_data[0..8] == [137, 80, 78, 71, 13, 10, 26, 10] {
