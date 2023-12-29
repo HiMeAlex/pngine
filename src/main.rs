@@ -19,7 +19,7 @@ fn read_file(file_path: &str) -> Vec<u8> {
         bytes
     }
 }
-
+// hello
 fn is_start_of_chunk(index:&usize, list: &Vec<u8>) -> bool {
     if index+8 >= list.len() {
         return false;
