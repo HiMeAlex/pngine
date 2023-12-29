@@ -3,6 +3,8 @@ use std::fs;
 use std::str::from_utf8;
 use std::collections::HashMap;
 
+//TODO: For the future, reconfigure to be a library instead of just a program.
+
 const CRITICAL_CHUNKS: [&str; 4] = ["IHDR", "PLTE", "IDAT", "IEND"];
 const ANCILLARY_CHUNKS: [&str; 18] = ["bKGD","cHRM","dSIG","eXIf","gAMA","hIST",
                                       "iCCP","iTXt","pHYs","sBIT","sPLT","sRGB",
