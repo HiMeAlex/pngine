@@ -24,10 +24,11 @@ fn is_start_of_chunk(index:&usize, list: &Vec<u8>) -> bool {
     if index+8 >= list.len() {
         return false;
     }
-    let chunk_res =  from_utf8(&list[(index + 4)..(index + 8)]);
+    let chunk_res:Result<&str, std::str::Utf8Error> =  from_utf8(&list[(index + 4)..(index + 8)]);
     if chunk_res.is_err() {
         false
-    } else if CRITICAL_CHUNKS.contains(&chunk_res.unwrap()) || ANCILLARY_CHUNKS.contains(&chunk_res.unwrap()) {
+    } else if CRITICAL_CHUNKS.contains(&chunk_res.unwrap()) ||
+              ANCILLARY_CHUNKS.contains(&chunk_res.unwrap()) {
         true
     } else {
         false
@@ -50,23 +51,28 @@ fn is_start_of_chunk(index:&usize, list: &Vec<u8>) -> bool {
 // fn get_numerical_metadata(chunk: &Vec<u8>) -> HashMap<String, u32> {
 
 // }
+
 // TODO: IDAT decoder
 // return vector consisting of arrays of color data
 //(0-255 so u8 and RGB so arrays of length 3 )
-// fn idat_decoder(chunk: &Vec<u8>) -> Vec<Vec<u8>> {
+// fn idat_decoder(chunk: &Vec<u8>, mode: ) -> Vec<Vec<u8>> {
 
 // }
 
-fn interpret_chunks(byte_data: &Vec<u8>) -> HashMap<usize, String> {
+fn interpret_chunks(byte_data: &Vec<u8>) -> HashMap<usize, &str> {
     if byte_data[0..8] == [137, 80, 78, 71, 13, 10, 26, 10] {
         let mut chunk_map  = HashMap::new();  
         let mut i = 0;
         while i < byte_data.len() {
             if is_start_of_chunk(&i, &byte_data) {
-                let chunk_type = String::from(from_utf8(&byte_data[(i+4)..(i+8)]).unwrap());
+                let chunk_type = from_utf8(&byte_data[(i+4)..(i+8)]).unwrap();
                 chunk_map.insert(i, chunk_type);
             }
-            i += 12;
+            i += 12; // the window for each check would look like 
+            // |chunk  size|  chunk name as utf8  |
+            // [x, x, x, x, x, x, x, x, x, x, x, x]
+            // where x is a given byte,
+            // thus increment 12 to remove redundant checks.
         }
         chunk_map
     } else {
